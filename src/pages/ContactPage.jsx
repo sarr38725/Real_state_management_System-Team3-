@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { 
   MapPinIcon, 
@@ -59,7 +60,7 @@ const ContactPage = () => {
         subject: '',
         message: ''
       });
-    } catch (error) {
+    } catch {
       showToast('Failed to send message. Please try again.', 'error');
     } finally {
       setLoading(false);
@@ -69,17 +70,17 @@ const ContactPage = () => {
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 text-white bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="mb-6 text-5xl font-bold md:text-6xl">
               Contact Us
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
+            <p className="max-w-3xl mx-auto text-xl text-blue-100 md:text-2xl">
               Ready to find your dream home? Get in touch with our expert team today.
             </p>
           </motion.div>
@@ -88,8 +89,8 @@ const ContactPage = () => {
 
       {/* Contact Info */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={info.title}
@@ -99,14 +100,14 @@ const ContactPage = () => {
                 transition={{ delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <info.icon className="h-8 w-8 text-blue-600" />
+                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full">
+                  <info.icon className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                <h3 className="mb-3 text-lg font-semibold text-gray-900">
                   {info.title}
                 </h3>
                 {info.details.map((detail, idx) => (
-                  <p key={idx} className="text-gray-600 mb-1">
+                  <p key={idx} className="mb-1 text-gray-600">
                     {detail}
                   </p>
                 ))}
@@ -118,14 +119,14 @@ const ContactPage = () => {
 
       {/* Contact Form */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl px-4 mx-auto sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="mb-12 text-center"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="mb-4 text-4xl font-bold text-gray-900">
               Send Us a Message
             </h2>
             <p className="text-xl text-gray-600">
@@ -138,10 +139,10 @@ const ContactPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-2xl shadow-xl p-8"
+            className="p-8 bg-white shadow-xl rounded-2xl"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <Input
                   label="Full Name"
                   required
@@ -177,7 +178,7 @@ const ContactPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
@@ -185,7 +186,7 @@ const ContactPage = () => {
                   rows={6}
                   value={formData.message}
                   onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="block w-full px-3 py-2 transition-all duration-200 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   placeholder="Tell us more about your real estate needs..."
                 />
               </div>
@@ -207,14 +208,14 @@ const ContactPage = () => {
 
       {/* Map Section */}
       <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="mb-12 text-center"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="mb-4 text-4xl font-bold text-gray-900">
               Find Our Office
             </h2>
             <p className="text-xl text-gray-600">
@@ -227,10 +228,10 @@ const ContactPage = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center"
+            className="flex items-center justify-center bg-gray-200 rounded-2xl h-96"
           >
             <div className="text-center text-gray-600">
-              <MapPinIcon className="h-16 w-16 mx-auto mb-4" />
+              <MapPinIcon className="w-16 h-16 mx-auto mb-4" />
               <p className="text-lg">Interactive Map Coming Soon</p>
               <p className="text-sm">123 Real Estate Street, City, State 12345</p>
             </div>

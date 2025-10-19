@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { PhotoIcon } from '@heroicons/react/24/outline';
 import { useProperties } from '../context/PropertyContext';
@@ -74,7 +75,7 @@ const EditPropertyPage = () => {
           showToast('Property not found', 'error');
           navigate('/dashboard/properties');
         }
-      } catch (error) {
+      } catch {
         showToast('Failed to load property', 'error');
         navigate('/dashboard/properties');
       } finally {
@@ -139,7 +140,7 @@ const EditPropertyPage = () => {
       } else {
         showToast(result.error || 'Failed to update property', 'error');
       }
-    } catch (error) {
+    } catch {
       showToast('Failed to update property. Please try again.', 'error');
     } finally {
       setSaving(false);
@@ -161,7 +162,7 @@ const EditPropertyPage = () => {
         animate={{ opacity: 1, y: 0 }}
       >
         <h1 className="text-3xl font-bold text-gray-900">Edit Property</h1>
-        <p className="text-gray-600 mt-2">
+        <p className="mt-2 text-gray-600">
           Update your property listing
         </p>
       </motion.div>
@@ -174,9 +175,9 @@ const EditPropertyPage = () => {
         className="space-y-8"
       >
         {/* Basic Information */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-6 bg-white rounded-lg shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">Basic Information</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="md:col-span-2">
               <Input
                 label="Property Title"
@@ -188,7 +189,7 @@ const EditPropertyPage = () => {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Description <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -211,7 +212,7 @@ const EditPropertyPage = () => {
             />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
                 Property Type <span className="text-red-500">*</span>
               </label>
               <select
@@ -256,9 +257,9 @@ const EditPropertyPage = () => {
         </div>
 
         {/* Location */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Location</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-6 bg-white rounded-lg shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">Location</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="md:col-span-2">
               <Input
                 label="Address"
@@ -296,25 +297,25 @@ const EditPropertyPage = () => {
         </div>
 
         {/* Images */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Images</h2>
+        <div className="p-6 bg-white rounded-lg shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">Images</h2>
           
           {/* Existing Images */}
           {existingImages.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Current Images</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <h3 className="mb-3 text-sm font-medium text-gray-700">Current Images</h3>
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                 {existingImages.map((image, index) => (
                   <div key={index} className="relative">
                     <img
                       src={image}
                       alt={`Current ${index + 1}`}
-                      className="w-full h-24 object-cover rounded-lg"
+                      className="object-cover w-full h-24 rounded-lg"
                     />
                     <button
                       type="button"
                       onClick={() => removeExistingImage(index)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                      className="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-red-500 rounded-full -top-2 -right-2"
                     >
                       ×
                     </button>
@@ -324,8 +325,8 @@ const EditPropertyPage = () => {
             </div>
           )}
           
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-            <PhotoIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <div className="p-6 text-center border-2 border-gray-300 border-dashed rounded-lg">
+            <PhotoIcon className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <div className="space-y-2">
               <p className="text-sm text-gray-600">Upload additional images</p>
               <input
@@ -337,7 +338,7 @@ const EditPropertyPage = () => {
                 id="image-upload"
               />
               <label htmlFor="image-upload">
-                <span className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer">
+                <span className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                   Choose Files
                 </span>
               </label>
@@ -346,19 +347,19 @@ const EditPropertyPage = () => {
 
           {images.length > 0 && (
             <div className="mt-4">
-              <h3 className="text-sm font-medium text-gray-700 mb-3">New Images</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <h3 className="mb-3 text-sm font-medium text-gray-700">New Images</h3>
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                 {images.map((image, index) => (
                   <div key={index} className="relative">
                     <img
                       src={URL.createObjectURL(image)}
                       alt={`Upload ${index + 1}`}
-                      className="w-full h-24 object-cover rounded-lg"
+                      className="object-cover w-full h-24 rounded-lg"
                     />
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                      className="absolute flex items-center justify-center w-6 h-6 text-xs text-white bg-red-500 rounded-full -top-2 -right-2"
                     >
                       ×
                     </button>
@@ -370,16 +371,16 @@ const EditPropertyPage = () => {
         </div>
 
         {/* Amenities */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Amenities</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="p-6 bg-white rounded-lg shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">Amenities</h2>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
             {amenityOptions.map(amenity => (
               <label key={amenity} className="flex items-center">
                 <input
                   type="checkbox"
                   checked={formData.amenities.includes(amenity)}
                   onChange={() => toggleAmenity(amenity)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <span className="ml-2 text-sm text-gray-700">{amenity}</span>
               </label>
@@ -388,19 +389,19 @@ const EditPropertyPage = () => {
         </div>
 
         {/* Featured */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="p-6 bg-white rounded-lg shadow-sm">
           <label className="flex items-center">
             <input
               type="checkbox"
               checked={formData.featured}
               onChange={(e) => setFormData({...formData, featured: e.target.checked})}
-              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <span className="ml-2 text-sm font-medium text-gray-700">
               Mark as Featured Property
             </span>
           </label>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="mt-1 text-xs text-gray-500">
             Featured properties get more visibility in search results
           </p>
         </div>

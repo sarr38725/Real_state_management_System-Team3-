@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { signIn } from '../firebase/auth';
@@ -49,13 +50,13 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-blue-50 to-indigo-100 sm:px-6 lg:px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-md w-full space-y-8"
+        className="w-full max-w-md space-y-8"
       >
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="p-8 bg-white shadow-xl rounded-2xl">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
             <p className="mt-2 text-sm text-gray-600">
@@ -64,12 +65,7 @@ const LoginPage = () => {
                 Sign up here
               </Link>
             </p>
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-xs text-blue-700 font-medium">Demo Admin Login:</p>
-              <p className="text-xs text-blue-600">Email: {ADMIN_EMAILS[0]}</p>
-              <p className="text-xs text-blue-600">Password: admin123</p>
-              <p className="text-xs text-blue-500 mt-1">Create admin account in Firebase Authentication first</p>
-            </div>
+         
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -94,20 +90,20 @@ const LoginPage = () => {
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-8 text-gray-400 hover:text-gray-600"
+                  className="absolute text-gray-400 right-3 top-8 hover:text-gray-600"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeSlashIcon className="h-5 w-5" />
+                    <EyeSlashIcon className="w-5 h-5" />
                   ) : (
-                    <EyeIcon className="h-5 w-5" />
+                    <EyeIcon className="w-5 h-5" />
                   )}
                 </button>
               </div>
             </div>
 
             {errors.submit && (
-              <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">
+              <div className="p-3 text-sm text-red-600 rounded-lg bg-red-50">
                 {errors.submit}
               </div>
             )}

@@ -31,8 +31,10 @@ const ScheduleModal = ({ isOpen, onClose, property }) => {
         contactMethod: 'phone'
       });
       setSubmitting(false);
+    } else {
+      console.log('ScheduleModal opened with property:', property);
     }
-  }, [isOpen]);
+  }, [isOpen, property]);
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -67,15 +69,23 @@ const ScheduleModal = ({ isOpen, onClose, property }) => {
   async function handleSubmit(e) {
     e.preventDefault();
     if (submitting) return;
+
+    if (!property || !property.id) {
+      showToast('Property information is missing. Please try again.', 'error');
+      return;
+    }
+
     setSubmitting(true);
 
     try {
       const payload = {
-        property_id: property?.id,
+        property_id: property.id,
         visit_date: formData.scheduledDate,
         visit_time: formData.scheduledTime,
         message: formData.message || null
       };
+
+      console.log('Sending schedule request:', payload);
 
       const res = await createSchedule(payload);
       if (res?.success) {
@@ -84,7 +94,8 @@ const ScheduleModal = ({ isOpen, onClose, property }) => {
       } else {
         showToast(res?.error || 'Failed to schedule viewing', 'error');
       }
-    } catch {
+    } catch (error) {
+      console.error('Schedule error:', error);
       showToast('Failed to schedule viewing. Please try again.', 'error');
     } finally {
       setSubmitting(false);

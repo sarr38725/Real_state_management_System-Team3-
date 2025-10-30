@@ -48,9 +48,13 @@ const createSchedule = async (req, res) => {
     const { property_id, visit_date, visit_time, message } = req.body;
     const userId = req.user.id;
 
+    console.log('Creating schedule:', { property_id, userId, visit_date, visit_time });
+
     const [property] = await db.query('SELECT agent_id FROM properties WHERE id = ?', [property_id]);
 
-    if (property.length === 0) {
+    console.log('Property query result:', property);
+
+    if (!property || property.length === 0) {
       return res.status(404).json({ message: 'Property not found' });
     }
 

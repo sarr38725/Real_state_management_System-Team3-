@@ -1,13 +1,12 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
 const db = require('./config/database');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
@@ -48,7 +47,7 @@ app.use((err, req, res, next) => {
   console.error('Error:', err.stack);
   res.status(err.status || 500).json({
     message: err.message || 'Something went wrong!',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    stack: err.stack
   });
 });
 
@@ -57,12 +56,12 @@ db.getConnection()
     console.log('✅ Database connected successfully');
     app.listen(PORT, () => {
       console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`📊 Database: ${process.env.DB_NAME}`);
-      console.log(`🔐 Environment: ${process.env.NODE_ENV}`);
+      console.log(`📊 Database: real_estate_db`);
+      console.log(`🔐 Environment: development`);
     });
   })
   .catch((err) => {
     console.error('❌ Database connection failed:', err.message);
-    console.error('Please check your .env configuration and ensure MySQL is running');
+    console.error('Please check database configuration and ensure MySQL is running');
     process.exit(1);
   });

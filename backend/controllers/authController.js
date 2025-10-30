@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
 
+const JWT_SECRET = 'real_estate_secret_key_2024_secure_token_xyz123';
+const JWT_EXPIRE = '7d';
+
 const register = async (req, res) => {
   try {
     const { email, password, full_name, phone, role } = req.body;
@@ -20,8 +23,8 @@ const register = async (req, res) => {
 
     const token = jwt.sign(
       { id: result.insertId, email, role: role || 'user' },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRE }
     );
 
     res.status(201).json({
@@ -51,8 +54,8 @@ const login = async (req, res) => {
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRE }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRE }
     );
 
     res.json({

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { signIn } from '../firebase/auth';
 import { useAuth } from '../context/AuthContext';
 import { useUI } from '../context/UIContext';
 import Button from '../components/common/Button';
@@ -21,7 +19,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { showToast } = useUI();
-  const { login, ADMIN_EMAILS } = useAuth();
+  const { login, userData } = useAuth();
 
   const from = location.state?.from?.pathname || '/dashboard';
 
@@ -36,8 +34,7 @@ const LoginPage = () => {
     if (!result.success) {
       showToast('Login failed. Please check your credentials.', 'error');
     } else {
-      // Check if user is admin and redirect accordingly
-      if (ADMIN_EMAILS.includes(formData.email)) {
+      if (result.user?.role === 'admin') {
         showToast('Welcome Admin!', 'success');
         navigate('/admin', { replace: true });
       } else {

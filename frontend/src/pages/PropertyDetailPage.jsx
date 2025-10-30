@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPinIcon, CalendarIcon, HeartIcon } from '@heroicons/react/24/outline';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase/db';
+import { propertyService } from '../services/propertyService';
 
 import ScheduleModal from '../components/property/ScheduleModal';
 import ContactModal from '../components/property/ContactModal';
@@ -53,19 +52,51 @@ export default function PropertyDetailPage() {
       try {
         setLoading(true);
         setErr('');
-        const ref = doc(db, 'properties', id);
-        const snap = await getDoc(ref);
-        if (!snap.exists()) {
-          if (alive) setErr('not-found');
-          return;
-        }
-        const data = { id: snap.id, ...snap.data() };
+        const response = await propertyService.getPropertyById(id);
+        const p = response.property;
+
+        const data = {
+          id: p.id,
+          title: p.title,
+          description: p.description,
+          type: p.property_type,
+          listingType: p.listing_type,
+          price: p.price,
+          location: {
+            address: p.address,
+            city: p.city,
+            state: p.state,
+            zipCode: p.zip_code,
+            country: p.country,
+          },
+          bedrooms: p.bedrooms,
+          bathrooms: p.bathrooms,
+          area: p.area_sqft,
+          yearBuilt: p.year_built,
+          status: p.status,
+          featured: p.featured,
+          images: p.images?.length ? p.images.map(img => img.image_url) : [],
+          agent: {
+            name: p.agent_name,
+            email: p.agent_email,
+            phone: p.agent_phone,
+          },
+          createdAt: new Date(p.created_at),
+          updatedAt: new Date(p.updated_at),
+        };
+
         if (alive) {
           setProperty(data);
           setCurrentImageIndex(0);
         }
       } catch (e) {
-        if (alive) setErr(e.message || 'Failed to load property');
+        if (alive) {
+          if (e.response?.status === 404) {
+            setErr('not-found');
+          } else {
+            setErr(e.message || 'Failed to load property');
+          }
+        }
       } finally {
         if (alive) setLoading(false);
       }

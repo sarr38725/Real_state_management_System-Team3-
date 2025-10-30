@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { signUp } from '../firebase/auth';
 import { useUI } from '../context/UIContext';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/common/Button';

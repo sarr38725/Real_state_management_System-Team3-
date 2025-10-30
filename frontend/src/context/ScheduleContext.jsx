@@ -27,23 +27,26 @@ export const ScheduleProvider = ({ children }) => {
     setLoading(true);
     try {
       const result = await scheduleService.getAllSchedules();
-      if (result.success) {
+      console.log('getAllSchedules result:', result);
+      if (result.success && result.data) {
         const formattedSchedules = result.data.map(schedule => ({
           id: schedule.id,
           propertyId: schedule.property_id,
-          propertyTitle: schedule.propertyTitle,
-          propertyAddress: schedule.propertyAddress,
+          propertyTitle: schedule.propertyTitle || 'Unknown Property',
+          propertyAddress: schedule.propertyAddress || 'Unknown Address',
           userId: schedule.user_id,
-          userName: schedule.userName,
-          userEmail: schedule.userEmail,
+          userName: schedule.userName || 'Unknown User',
+          userEmail: schedule.userEmail || 'Unknown Email',
           scheduledDate: `${schedule.visit_date} ${schedule.visit_time}`,
-          contactMethod: 'email',
-          message: schedule.message,
+          contactMethod: schedule.contact_method || 'email',
+          message: schedule.message || '',
           status: schedule.status,
           createdAt: schedule.created_at
         }));
+        console.log('Formatted schedules:', formattedSchedules);
         setSchedules(formattedSchedules);
       } else {
+        console.warn('No schedules loaded or unsuccessful result');
         setSchedules([]);
       }
     } catch (error) {

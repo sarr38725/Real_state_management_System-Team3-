@@ -113,12 +113,11 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     INDEX idx_status (status)
 );
 
--- Insert Default Admin User (password: admin123)
+-- Insert Default Admin User
+-- Email: admin@realestate.com
+-- Password: admin123
 INSERT INTO users (email, password, full_name, role) VALUES
-('admin@realestate.com', '$2a$10$rQZ3YxqHQxJXXxKxJXxJX.xJXxJXxJXxJXxJXxJXxJXxJXxJXxJXe', 'Admin User', 'admin');
-
--- Note: The password hash above is a placeholder. You should generate a proper bcrypt hash for 'admin123'
--- You can generate it using Node.js: bcrypt.hashSync('admin123', 10)
+('admin@realestate.com', '$2b$10$BvziCl9TKHkILiqtJvcAG./bXKJGyT4JD11btGfbBTpgMGDdmxfzK', 'Admin User', 'admin');
 
 -- Sample Data (Optional)
 -- Uncomment below to add sample properties

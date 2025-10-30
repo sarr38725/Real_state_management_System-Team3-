@@ -48,17 +48,28 @@ const createSchedule = async (req, res) => {
     const { property_id, visit_date, visit_time, message } = req.body;
     const userId = req.user.id;
 
-    console.log('Creating schedule:', { property_id, userId, visit_date, visit_time });
-
-    const [property] = await db.query('SELECT agent_id FROM properties WHERE id = ?', [property_id]);
-
-    console.log('Property query result:', property);
-
-    if (!property || property.length === 0) {
-      return res.status(404).json({ message: 'Property not found' });
+    if (!property_id) {
+      return res.status(400).json({ message: 'Property ID is required' });
     }
 
-    const agentId = property[0].agent_id;
+    if (!visit_date || !visit_time) {
+      return res.status(400).json({ message: 'Visit date and time are required' });
+    }
+
+    const [properties] = await db.query('SELECT id, agent_id FROM properties WHERE id = ?', [property_id]);
+
+    if (!properties || properties.length === 0) {
+      return res.status(404).json({
+        message: 'Property not found',
+        property_id: property_id
+      });
+    }
+
+    const agentId = properties[0].agent_id;
+
+    if (!agentId) {
+      return res.status(400).json({ message: 'Property has no assigned agent' });
+    }
 
     const [result] = await db.query(
       'INSERT INTO schedules (property_id, user_id, agent_id, visit_date, visit_time, message, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
@@ -79,6 +90,7 @@ const createSchedule = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Schedule creation error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

@@ -70,23 +70,17 @@ const ScheduleModal = ({ isOpen, onClose, property }) => {
     setSubmitting(true);
 
     try {
-      const scheduleDateTime = new Date(`${formData.scheduledDate}T${formData.scheduledTime}`);
       const payload = {
-        propertyId: property?.id,
-        propertyTitle: property?.title || '',
-        propertyAddress: `${property?.location?.address || ''}${property?.location?.city ? ', ' + property.location.city : ''}`,
-        scheduledDate: scheduleDateTime,
-        message: formData.message,
-        contactMethod: formData.contactMethod,
-        agentName: property?.agent?.name || 'Property Agent',
-        agentPhone: property?.agent?.phone || '',
-        agentEmail: property?.agent?.email || ''
+        property_id: property?.id,
+        visit_date: formData.scheduledDate,
+        visit_time: formData.scheduledTime,
+        message: formData.message || null
       };
 
-      const res = await createSchedule(payload); // ← make sure this does NOT toggle modal open internally
+      const res = await createSchedule(payload);
       if (res?.success) {
         showToast('Viewing scheduled successfully! Agent will contact you soon.', 'success');
-        onClose(); // ✅ close once
+        onClose();
       } else {
         showToast(res?.error || 'Failed to schedule viewing', 'error');
       }

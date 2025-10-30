@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import scheduleService from '../services/scheduleService';
 
 const ScheduleContext = createContext();
 
@@ -18,14 +19,33 @@ export const ScheduleProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      loadUserSchedules(user.id);
+      loadUserSchedules();
     }
   }, [user]);
 
   const loadAllSchedules = async () => {
     setLoading(true);
     try {
-      setSchedules([]);
+      const result = await scheduleService.getAllSchedules();
+      if (result.success) {
+        const formattedSchedules = result.data.map(schedule => ({
+          id: schedule.id,
+          propertyId: schedule.property_id,
+          propertyTitle: schedule.propertyTitle,
+          propertyAddress: schedule.propertyAddress,
+          userId: schedule.user_id,
+          userName: schedule.userName,
+          userEmail: schedule.userEmail,
+          scheduledDate: `${schedule.visit_date} ${schedule.visit_time}`,
+          contactMethod: 'email',
+          message: schedule.message,
+          status: schedule.status,
+          createdAt: schedule.created_at
+        }));
+        setSchedules(formattedSchedules);
+      } else {
+        setSchedules([]);
+      }
     } catch (error) {
       console.error('Error loading schedules:', error);
       setSchedules([]);
@@ -34,12 +54,28 @@ export const ScheduleProvider = ({ children }) => {
     }
   };
 
-  const loadUserSchedules = async (userId) => {
-    if (!userId) return;
+  const loadUserSchedules = async () => {
+    if (!user) return;
 
     setLoading(true);
     try {
-      setSchedules([]);
+      const result = await scheduleService.getUserSchedules();
+      if (result.success) {
+        const formattedSchedules = result.data.map(schedule => ({
+          id: schedule.id,
+          propertyId: schedule.property_id,
+          propertyTitle: schedule.propertyTitle,
+          propertyAddress: schedule.propertyAddress,
+          propertyCity: schedule.propertyCity,
+          scheduledDate: `${schedule.visit_date} ${schedule.visit_time}`,
+          message: schedule.message,
+          status: schedule.status,
+          createdAt: schedule.created_at
+        }));
+        setSchedules(formattedSchedules);
+      } else {
+        setSchedules([]);
+      }
     } catch (error) {
       console.error('Error loading user schedules:', error);
       setSchedules([]);
@@ -54,24 +90,30 @@ export const ScheduleProvider = ({ children }) => {
     }
 
     try {
-      return { success: true, id: Date.now() };
+      const result = await scheduleService.createSchedule(scheduleData);
+      if (result.success) {
+        await loadUserSchedules();
+      }
+      return result;
     } catch (error) {
       console.error('Error creating schedule:', error);
       return { success: false, error: error.message };
     }
   };
 
-  const updateScheduleStatus = async (scheduleId, status, notes = '') => {
+  const updateScheduleStatus = async (scheduleId, status) => {
     try {
-      setSchedules(prev =>
-        prev.map(schedule =>
-          schedule.id === scheduleId
-            ? { ...schedule, status, adminNotes: notes, updatedAt: new Date() }
-            : schedule
-        )
-      );
-
-      return { success: true };
+      const result = await scheduleService.updateScheduleStatus(scheduleId, status);
+      if (result.success) {
+        setSchedules(prev =>
+          prev.map(schedule =>
+            schedule.id === scheduleId
+              ? { ...schedule, status }
+              : schedule
+          )
+        );
+      }
+      return result;
     } catch (error) {
       console.error('Error updating schedule status:', error);
       return { success: false, error: error.message };
@@ -80,8 +122,11 @@ export const ScheduleProvider = ({ children }) => {
 
   const deleteSchedule = async (scheduleId) => {
     try {
-      setSchedules(prev => prev.filter(schedule => schedule.id !== scheduleId));
-      return { success: true };
+      const result = await scheduleService.deleteSchedule(scheduleId);
+      if (result.success) {
+        setSchedules(prev => prev.filter(schedule => schedule.id !== scheduleId));
+      }
+      return result;
     } catch (error) {
       console.error('Error deleting schedule:', error);
       return { success: false, error: error.message };

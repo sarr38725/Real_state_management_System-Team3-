@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
+const scheduleRoutes = require('./routes/scheduleRoutes');
 const db = require('./config/database');
 
 const app = express();
@@ -18,7 +19,8 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     endpoints: {
       auth: '/api/auth',
-      properties: '/api/properties'
+      properties: '/api/properties',
+      schedules: '/api/schedules'
     }
   });
 });
@@ -42,6 +44,7 @@ app.get('/api/health', async (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertyRoutes);
+app.use('/api/schedules', scheduleRoutes);
 
 app.use((err, req, res, next) => {
   console.error('Error:', err.stack);

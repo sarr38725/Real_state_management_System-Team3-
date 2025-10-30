@@ -7,6 +7,7 @@ import RoleRoute from './RoleRoute';
 // Layouts
 import SiteLayout from '../layouts/SiteLayout';
 import DashboardLayout from '../layouts/DashboardLayout';
+import AdminLayout from '../layouts/AdminLayout';
 
 // Public Pages
 import HomePage from '../pages/HomePage';
@@ -86,7 +87,7 @@ const AppRoutes = () => {
         <Route path="/admin" element={
           <ProtectedRoute>
             <RoleRoute allowedRoles={['admin']}>
-              <DashboardLayout />
+              <AdminLayout />
             </RoleRoute>
           </ProtectedRoute>
         }>

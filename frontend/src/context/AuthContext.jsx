@@ -75,17 +75,7 @@ export const AuthProvider = ({ children }) => {
         phone: additionalData.phone || '',
         role: additionalData.role || 'user',
       });
-      const currentUser = response.user;
-      setUser(currentUser);
-      setUserData({
-        displayName: currentUser.full_name,
-        role: currentUser.role,
-        email: currentUser.email,
-        phone: currentUser.phone || '',
-        avatar: currentUser.profile_image || '',
-      });
-      setIsAdminMode(currentUser.role === 'admin');
-      return { success: true, user: currentUser };
+      return { success: true, user: response.user };
     } catch (error) {
       return { success: false, error: error.response?.data?.message || error.message };
     }

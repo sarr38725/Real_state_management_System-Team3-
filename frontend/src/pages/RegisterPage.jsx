@@ -56,8 +56,8 @@ const RegisterPage = () => {
       setErrors({ submit: result.error });
       showToast('Registration failed. Please try again.', 'error');
     } else {
-      showToast('Account created successfully! Welcome to RealEstate.', 'success');
-      navigate('/dashboard');
+      showToast('Account created successfully! Please login to continue.', 'success');
+      navigate('/login');
     }
 
     setLoading(false);

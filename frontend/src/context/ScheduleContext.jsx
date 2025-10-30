@@ -29,20 +29,30 @@ export const ScheduleProvider = ({ children }) => {
       const result = await scheduleService.getAllSchedules();
       console.log('getAllSchedules result:', result);
       if (result.success && result.data) {
-        const formattedSchedules = result.data.map(schedule => ({
-          id: schedule.id,
-          propertyId: schedule.property_id,
-          propertyTitle: schedule.propertyTitle || 'Unknown Property',
-          propertyAddress: schedule.propertyAddress || 'Unknown Address',
-          userId: schedule.user_id,
-          userName: schedule.userName || 'Unknown User',
-          userEmail: schedule.userEmail || 'Unknown Email',
-          scheduledDate: `${schedule.visit_date} ${schedule.visit_time}`,
-          contactMethod: schedule.contact_method || 'email',
-          message: schedule.message || '',
-          status: schedule.status,
-          createdAt: schedule.created_at
-        }));
+        const formattedSchedules = result.data.map(schedule => {
+          let scheduledDate;
+          try {
+            const dateTimeString = `${schedule.visit_date}T${schedule.visit_time}`;
+            scheduledDate = new Date(dateTimeString).toISOString();
+          } catch (error) {
+            scheduledDate = `${schedule.visit_date} ${schedule.visit_time}`;
+          }
+
+          return {
+            id: schedule.id,
+            propertyId: schedule.property_id,
+            propertyTitle: schedule.propertyTitle || 'Unknown Property',
+            propertyAddress: schedule.propertyAddress || 'Unknown Address',
+            userId: schedule.user_id,
+            userName: schedule.userName || 'Unknown User',
+            userEmail: schedule.userEmail || 'Unknown Email',
+            scheduledDate: scheduledDate,
+            contactMethod: schedule.contact_method || 'email',
+            message: schedule.message || '',
+            status: schedule.status,
+            createdAt: schedule.created_at
+          };
+        });
         console.log('Formatted schedules:', formattedSchedules);
         setSchedules(formattedSchedules);
       } else {

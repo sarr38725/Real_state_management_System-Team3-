@@ -19,31 +19,43 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { showToast } = useUI();
-  const { login, userData } = useAuth();
+  const { login, user, userData } = useAuth();
 
   const from = location.state?.from?.pathname || '/dashboard';
+
+  React.useEffect(() => {
+    if (user) {
+      if (user.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
+    }
+  }, [user, navigate, from]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
 
-    // Universal login (works for both users and admins)
     const result = await login(formData.email, formData.password);
 
     if (!result.success) {
       showToast('Login failed. Please check your credentials.', 'error');
+      setLoading(false);
     } else {
       if (result.user?.role === 'admin') {
         showToast('Welcome Admin!', 'success');
-        navigate('/admin', { replace: true });
+        setTimeout(() => {
+          navigate('/admin', { replace: true });
+        }, 100);
       } else {
         showToast('Welcome back!', 'success');
-        navigate(from, { replace: true });
+        setTimeout(() => {
+          navigate(from, { replace: true });
+        }, 100);
       }
     }
-
-    setLoading(false);
   };
 
   return (

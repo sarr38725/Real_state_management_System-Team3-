@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 const {
   getAllSchedules,
   getUserSchedules,
@@ -9,10 +9,10 @@ const {
   deleteSchedule
 } = require('../controllers/scheduleController');
 
-router.get('/all', auth, getAllSchedules);
-router.get('/user', auth, getUserSchedules);
-router.post('/', auth, createSchedule);
-router.patch('/:id/status', auth, updateScheduleStatus);
-router.delete('/:id', auth, deleteSchedule);
+router.get('/all', authenticate, getAllSchedules);
+router.get('/user', authenticate, getUserSchedules);
+router.post('/', authenticate, createSchedule);
+router.patch('/:id/status', authenticate, updateScheduleStatus);
+router.delete('/:id', authenticate, deleteSchedule);
 
 module.exports = router;

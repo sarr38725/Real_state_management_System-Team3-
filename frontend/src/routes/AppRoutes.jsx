@@ -95,6 +95,7 @@ const AppRoutes = () => {
           <Route path="users" element={<AdminUsers />} />
           <Route path="properties" element={<AdminProperties />} />
           <Route path="properties/add" element={<AdminAddProperty />} />
+          <Route path="properties/edit/:id" element={<EditPropertyPage />} />
           <Route path="schedules" element={<AdminSchedules />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>

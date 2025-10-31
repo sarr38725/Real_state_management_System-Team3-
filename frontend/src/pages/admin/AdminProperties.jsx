@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   MagnifyingGlassIcon, 
@@ -18,6 +18,7 @@ import Button from '../../components/common/Button';
 const AdminProperties = () => {
   const { properties, loading, removeProperty } = useProperties();
   const { showToast } = useUI();
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
 
@@ -185,10 +186,18 @@ const AdminProperties = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900" title="View">
+                      <button
+                        onClick={() => navigate(`/properties/${property.id}`)}
+                        className="text-blue-600 hover:text-blue-900"
+                        title="View"
+                      >
                         <EyeIcon className="h-4 w-4" />
                       </button>
-                      <button className="text-gray-600 hover:text-gray-900" title="Edit">
+                      <button
+                        onClick={() => navigate(`/admin/properties/edit/${property.id}`)}
+                        className="text-gray-600 hover:text-gray-900"
+                        title="Edit"
+                      >
                         <PencilIcon className="h-4 w-4" />
                       </button>
                       {property.status === 'pending' && (

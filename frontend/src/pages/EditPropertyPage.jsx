@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { PhotoIcon } from '@heroicons/react/24/outline';
 import { useProperties } from '../context/PropertyContext';
 import { useUI } from '../context/UIContext';
-import propertyService from '../services/propertyService';
+import { propertyService } from '../services/propertyService';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LoadingSpinner from '../components/common/LoadingSpinner';

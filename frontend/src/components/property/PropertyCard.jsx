@@ -21,6 +21,22 @@ const PropertyCard = ({ property, onFavorite, isFavorited = false }) => {
     createdAt
   } = property;
 
+  const FALLBACK_IMAGES = [
+    'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg',
+    'https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg',
+    'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg',
+    'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg',
+    'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg',
+    'https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg',
+    'https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg',
+    'https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg'
+  ];
+
+  const getFallbackImage = () => {
+    const index = id % FALLBACK_IMAGES.length;
+    return FALLBACK_IMAGES[index];
+  };
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -47,7 +63,7 @@ const PropertyCard = ({ property, onFavorite, isFavorited = false }) => {
       {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
         <img
-          src={images?.[0] || 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg'}
+          src={images?.[0] || getFallbackImage()}
           alt={title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />

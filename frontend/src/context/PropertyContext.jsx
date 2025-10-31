@@ -254,6 +254,40 @@ export const PropertyProvider = ({ children }) => {
     }
   }, [user]);
 
+  const updatePropertyStatus = useCallback(async (id, status) => {
+    if (!user) throw new Error('User must be logged in to update property status');
+
+    try {
+      const property = properties.find(p => p.id === id);
+      if (!property) throw new Error('Property not found');
+
+      const payload = {
+        title: property.title,
+        description: property.description,
+        property_type: property.type,
+        listing_type: property.listingType,
+        price: property.price,
+        address: property.location.address,
+        city: property.location.city,
+        state: property.location.state,
+        zip_code: property.location.zipCode,
+        country: property.location.country,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        area_sqft: property.area,
+        year_built: property.yearBuilt,
+        status: status,
+        featured: property.featured,
+      };
+
+      await propertyService.updateProperty(id, payload);
+      await loadProperties();
+    } catch (error) {
+      console.error('Error updating property status:', error);
+      throw new Error(error.response?.data?.message || error.message);
+    }
+  }, [user, properties, loadProperties]);
+
   useEffect(() => {
     loadProperties();
     loadFeaturedProperties();
@@ -268,7 +302,8 @@ export const PropertyProvider = ({ children }) => {
     loadFeaturedProperties,
     addProperty,
     editProperty,
-    removeProperty
+    removeProperty,
+    updatePropertyStatus
   };
 
   return <PropertyContext.Provider value={value}>{children}</PropertyContext.Provider>;

@@ -33,6 +33,7 @@ import AdminProperties from '../pages/admin/AdminProperties';
 import AdminAddProperty from '../pages/admin/AdminAddProperty';
 import AdminSchedules from '../pages/admin/AdminSchedules';
 import AdminSettings from '../pages/admin/AdminSettings';
+import AdminSales from '../pages/admin/AdminSales';
 
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
@@ -97,6 +98,7 @@ const AppRoutes = () => {
           <Route path="properties/add" element={<AdminAddProperty />} />
           <Route path="properties/edit/:id" element={<EditPropertyPage />} />
           <Route path="schedules" element={<AdminSchedules />} />
+          <Route path="sales" element={<AdminSales />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
 

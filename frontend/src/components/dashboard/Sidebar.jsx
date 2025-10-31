@@ -1,16 +1,17 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  HomeIcon, 
-  BuildingOfficeIcon, 
-  HeartIcon, 
+import {
+  HomeIcon,
+  BuildingOfficeIcon,
+  HeartIcon,
   UserIcon,
   PlusIcon,
   Bars3Icon,
   UserGroupIcon,
   CalendarIcon,
-  CogIcon
+  CogIcon,
+  CurrencyDollarIcon
 } from '@heroicons/react/24/outline';
 import { useAuth } from '../../context/AuthContext';
 import { useUI } from '../../context/UIContext';
@@ -43,6 +44,7 @@ const Sidebar = () => {
       { name: 'Admin Dashboard', href: '/admin', icon: CogIcon },
       { name: 'Manage Users', href: '/admin/users', icon: UserGroupIcon },
       { name: 'Manage Properties', href: '/admin/properties', icon: BuildingOfficeIcon },
+      { name: 'Sales Management', href: '/admin/sales', icon: CurrencyDollarIcon },
       { name: 'Manage Schedules', href: '/admin/schedules', icon: CalendarIcon },
       { name: 'Settings', href: '/admin/settings', icon: CogIcon }
     );

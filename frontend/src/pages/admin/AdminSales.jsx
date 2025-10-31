@@ -77,6 +77,14 @@ const AdminSales = () => {
     }).format(amount);
   };
 
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   const filteredProperties = properties.filter(p => {
     if (filter === 'available') {
       return p.status === 'available';
@@ -172,11 +180,117 @@ const AdminSales = () => {
         </motion.div>
       </div>
 
+      {/* Sold Properties Summary Table */}
+      {soldProperties.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="p-6 bg-white shadow-sm rounded-2xl"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-semibold text-gray-900">Sales History</h2>
+            <Badge variant="success">{soldProperties.length} Total Sales</Badge>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Property
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Type
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Location
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Sale Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Agent
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Sale Price
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {soldProperties
+                  .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                  .map((property) => (
+                    <tr key={property.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="flex-shrink-0 h-10 w-10">
+                            {property.images && property.images.length > 0 ? (
+                              <img
+                                src={property.images[0]}
+                                alt={property.title}
+                                className="h-10 w-10 rounded-lg object-cover"
+                              />
+                            ) : (
+                              <div className="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                <HomeIcon className="h-5 w-5 text-gray-400" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900">
+                              {property.title}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {property.bedrooms} bed • {property.bathrooms} bath
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Badge variant={property.listingType === 'sale' ? 'success' : 'info'} size="sm">
+                          {property.listingType}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {property.location?.city}, {property.location?.state}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {formatDate(property.updatedAt)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{property.agent?.name || 'N/A'}</div>
+                        {property.agent?.email && (
+                          <div className="text-xs text-gray-500">{property.agent.email}</div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Badge
+                          variant="success"
+                          size="sm"
+                        >
+                          {property.status}
+                        </Badge>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold text-gray-900">
+                        {formatCurrency(property.price)}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      )}
+
       {/* Filter Tabs */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
+        transition={{ delay: 0.5 }}
         className="p-6 bg-white shadow-sm rounded-2xl"
       >
         <div className="flex space-x-4 mb-6">
@@ -251,6 +365,21 @@ const AdminSales = () => {
                         {property.status}
                       </Badge>
                     </div>
+                    {(property.status === 'sold' || property.status === 'rented') && (
+                      <div className="mt-2 space-y-1">
+                        <p className="text-xs text-gray-500">
+                          <span className="font-medium">Sale Date:</span> {formatDate(property.updatedAt)}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          <span className="font-medium">Agent:</span> {property.agent?.name || 'N/A'}
+                        </p>
+                        {property.agent?.email && (
+                          <p className="text-xs text-gray-500">
+                            <span className="font-medium">Contact:</span> {property.agent.email}
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="text-right">
@@ -260,6 +389,11 @@ const AdminSales = () => {
                     <p className="text-sm text-gray-500">
                       {property.bedrooms} bed • {property.bathrooms} bath
                     </p>
+                    {property.area && (
+                      <p className="text-xs text-gray-400 mt-1">
+                        {property.area} sqft
+                      </p>
+                    )}
                   </div>
                 </div>
 

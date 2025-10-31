@@ -143,7 +143,7 @@ export const PropertyProvider = ({ children }) => {
           yearBuilt: p.year_built,
           status: p.status,
           featured: p.featured,
-          images: p.primary_image ? [p.primary_image] : [],
+          images: p.images || [],
           createdAt: new Date(p.created_at),
           updatedAt: new Date(p.updated_at),
         }));

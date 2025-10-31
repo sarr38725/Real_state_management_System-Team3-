@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-const JWT_SECRET = 'real_estate_secret_key_2024_secure_token_xyz123';
+const JWT_SECRET = process.env.JWT_SECRET || 'real_estate_secret_key_2024_secure_token_xyz123';
 
 const authenticate = (req, res, next) => {
   try {

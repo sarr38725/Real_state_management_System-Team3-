@@ -57,7 +57,7 @@ const getAllProperties = async (req, res) => {
         );
         return {
           ...property,
-          images: images.map(img => img.image_url)
+          images: images && images.length > 0 ? images.map(img => img.image_url) : []
         };
       })
     );
@@ -90,7 +90,7 @@ const getPropertyById = async (req, res) => {
     res.json({
       property: {
         ...properties[0],
-        images: images.map(img => img.image_url)
+        images: images && images.length > 0 ? images.map(img => img.image_url) : []
       }
     });
   } catch (error) {

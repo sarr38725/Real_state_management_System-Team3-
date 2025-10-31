@@ -1,9 +1,10 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../config/database');
+require('dotenv').config();
 
-const JWT_SECRET = 'real_estate_secret_key_2024_secure_token_xyz123';
-const JWT_EXPIRE = '7d';
+const JWT_SECRET = process.env.JWT_SECRET || 'real_estate_secret_key_2024_secure_token_xyz123';
+const JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
 
 const register = async (req, res) => {
   try {

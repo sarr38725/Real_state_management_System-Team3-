@@ -51,9 +51,13 @@ const EditPropertyPage = () => {
   ];
 
   useEffect(() => {
+    let isMounted = true;
+
     const loadProperty = async () => {
       try {
         const response = await propertyService.getPropertyById(id);
+
+        if (!isMounted) return;
 
         if (response && response.id) {
           setFormData({
@@ -74,19 +78,27 @@ const EditPropertyPage = () => {
           setExistingImages(response.images || []);
         } else {
           showToast('Property not found', 'error');
-          navigate('/admin/properties');
+          navigate(isAdminRoute ? '/admin/properties' : '/dashboard/properties');
         }
       } catch (error) {
         console.error('Error loading property:', error);
-        showToast('Failed to load property', 'error');
-        navigate('/admin/properties');
+        if (isMounted) {
+          showToast('Failed to load property', 'error');
+          navigate(isAdminRoute ? '/admin/properties' : '/dashboard/properties');
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     loadProperty();
-  }, [id, navigate, showToast]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);

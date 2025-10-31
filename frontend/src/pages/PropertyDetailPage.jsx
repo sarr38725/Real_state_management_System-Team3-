@@ -112,6 +112,22 @@ export default function PropertyDetailPage() {
     );
   }
 
+  if (property && (property.status === 'sold' || property.status === 'rented')) {
+    return (
+      <div className="flex items-center justify-center min-h-screen pt-16">
+        <div className="text-center">
+          <h2 className="mb-2 text-2xl font-bold text-gray-900">Property No Longer Available</h2>
+          <p className="mb-4 text-gray-600">
+            This property has been {property.status === 'sold' ? 'sold' : 'rented'}.
+          </p>
+          <Button onClick={() => window.location.href = '/properties'}>
+            View Available Properties
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (err === 'not-found' || !property) {
     return (
       <div className="flex items-center justify-center min-h-screen pt-16">

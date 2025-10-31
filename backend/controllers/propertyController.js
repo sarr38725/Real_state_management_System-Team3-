@@ -2,7 +2,7 @@ const db = require('../config/database');
 
 const getAllProperties = async (req, res) => {
   try {
-    const { city, property_type, listing_type, min_price, max_price, bedrooms, status } = req.query;
+    const { city, property_type, listing_type, min_price, max_price, bedrooms, status, featured } = req.query;
 
     let query = `
       SELECT p.*, u.full_name as agent_name, u.email as agent_email, u.phone as agent_phone
@@ -39,6 +39,10 @@ const getAllProperties = async (req, res) => {
     if (status) {
       query += ' AND p.status = ?';
       params.push(status);
+    }
+    if (featured === 'true') {
+      query += ' AND p.featured = 1 AND p.status = ?';
+      params.push('available');
     }
 
     query += ' ORDER BY p.featured DESC, p.created_at DESC';

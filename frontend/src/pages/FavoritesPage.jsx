@@ -17,8 +17,8 @@ const FavoritesPage = () => {
       try {
         // In a real app, you would fetch favorites from a separate collection
         // For now, we'll show featured properties as demo favorites
-        const featuredProperties = properties.filter(p => p.featured && p.status === 'approved');
-        
+        const featuredProperties = properties.filter(p => p.featured && p.status === 'available');
+
         setFavorites(featuredProperties);
       } catch (error) {
         console.error('Error loading favorites:', error);

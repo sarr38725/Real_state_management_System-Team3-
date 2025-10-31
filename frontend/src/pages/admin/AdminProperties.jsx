@@ -89,6 +89,8 @@ const AdminProperties = () => {
           <div className="relative">
             <MagnifyingGlassIcon className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <input
+              id="search-properties"
+              name="search-properties"
               type="text"
               placeholder="Search properties..."
               value={searchTerm}
@@ -98,14 +100,16 @@ const AdminProperties = () => {
           </div>
 
           <select
+            id="filter-status"
+            name="filter-status"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="pending">Pending</option>
-            <option value="rejected">Rejected</option>
+            <option key="all" value="all">All Status</option>
+            <option key="active" value="active">Active</option>
+            <option key="pending" value="pending">Pending</option>
+            <option key="rejected" value="rejected">Rejected</option>
           </select>
 
           <div className="flex items-center text-sm text-gray-600">

@@ -98,6 +98,8 @@ const PropertiesPage = () => {
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <select
+              id="filter-type"
+              name="filter-type"
               value={filters.type}
               onChange={(e) => setFilters({ ...filters, type: e.target.value })}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -108,6 +110,8 @@ const PropertiesPage = () => {
             </select>
 
             <select
+              id="filter-price-range"
+              name="filter-price-range"
               value={filters.priceRange}
               onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -118,6 +122,8 @@ const PropertiesPage = () => {
             </select>
 
             <input
+              id="filter-location"
+              name="filter-location"
               type="text"
               placeholder="Location"
               value={filters.location}

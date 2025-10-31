@@ -35,6 +35,8 @@ const SearchPanel = () => {
         <div className="relative">
           <MapPinIcon className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
           <input
+            id="search-location"
+            name="search-location"
             type="text"
             placeholder="Location"
             value={searchData.location}
@@ -44,27 +46,31 @@ const SearchPanel = () => {
         </div>
         
         <select
+          id="search-type"
+          name="search-type"
           value={searchData.type}
           onChange={(e) => setSearchData({...searchData, type: e.target.value})}
           className="w-full px-4 py-3 rounded-lg border border-white/30 bg-white/20 backdrop-blur-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
         >
-          <option value="">Property Type</option>
-          <option value="house">House</option>
-          <option value="apartment">Apartment</option>
-          <option value="condo">Condo</option>
-          <option value="villa">Villa</option>
+          <option key="" value="">Property Type</option>
+          <option key="house" value="house">House</option>
+          <option key="apartment" value="apartment">Apartment</option>
+          <option key="condo" value="condo">Condo</option>
+          <option key="villa" value="villa">Villa</option>
         </select>
         
         <select
+          id="search-price-range"
+          name="search-price-range"
           value={searchData.priceRange}
           onChange={(e) => setSearchData({...searchData, priceRange: e.target.value})}
           className="w-full px-4 py-3 rounded-lg border border-white/30 bg-white/20 backdrop-blur-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
         >
-          <option value="">Price Range</option>
-          <option value="0-500000">Under $500K</option>
-          <option value="500000-1000000">$500K - $1M</option>
-          <option value="1000000-2000000">$1M - $2M</option>
-          <option value="2000000+">$2M+</option>
+          <option key="" value="">Price Range</option>
+          <option key="0-500000" value="0-500000">Under $500K</option>
+          <option key="500000-1000000" value="500000-1000000">$500K - $1M</option>
+          <option key="1000000-2000000" value="1000000-2000000">$1M - $2M</option>
+          <option key="2000000+" value="2000000+">$2M+</option>
         </select>
         
         <Button 

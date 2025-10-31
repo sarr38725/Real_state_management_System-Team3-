@@ -116,6 +116,8 @@ const ProfilePage = () => {
                 Account Type
               </label>
               <input
+                id="account-type"
+                name="account-type"
                 type="text"
                 value={userData?.role || 'buyer'}
                 disabled

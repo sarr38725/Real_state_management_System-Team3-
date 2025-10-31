@@ -94,10 +94,10 @@ const AdminUsers = () => {
             onChange={(e) => setFilterRole(e.target.value)}
             className="block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
-            <option value="all">All Roles</option>
-            <option value="admin">Admin</option>
-            <option value="seller">Seller</option>
-            <option value="buyer">Buyer</option>
+            <option key="all" value="all">All Roles</option>
+            <option key="admin" value="admin">Admin</option>
+            <option key="seller" value="seller">Seller</option>
+            <option key="buyer" value="buyer">Buyer</option>
           </select>
 
           <div className="flex items-center text-sm text-gray-600">

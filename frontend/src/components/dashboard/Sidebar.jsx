@@ -93,8 +93,8 @@ const Sidebar = () => {
         {/* Navigation */}
         <nav className="mt-8 px-4 flex-1 overflow-y-auto">
           <ul className="space-y-2">
-            {navigation.map((item) => (
-              <li key={item.name}>
+            {navigation.map((item, index) => (
+              <li key={`${item.name}-${index}`}>
                 {item.name === 'Divider' ? (
                   <div className="my-4 border-t border-gray-200"></div>
                 ) : (

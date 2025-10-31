@@ -71,7 +71,7 @@ export const PropertyProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [isAdminMode]);
 
   const loadFeaturedProperties = useCallback(async () => {
     try {

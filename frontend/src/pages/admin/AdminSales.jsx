@@ -15,7 +15,7 @@ import Badge from '../../components/common/Badge';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 const AdminSales = () => {
-  const { properties, updatePropertyStatus, loading } = useProperties();
+  const { properties, updatePropertyStatus, loading, loadProperties } = useProperties();
   const { showToast } = useUI();
   const [filter, setFilter] = useState('available');
   const [soldProperties, setSoldProperties] = useState([]);
@@ -24,6 +24,10 @@ const AdminSales = () => {
     thisYear: { count: 0, total: 0 },
     allTime: { count: 0, total: 0 }
   });
+
+  useEffect(() => {
+    loadProperties({});
+  }, [loadProperties]);
 
   useEffect(() => {
     const sold = properties.filter(p => p.status === 'sold' || p.status === 'rented');

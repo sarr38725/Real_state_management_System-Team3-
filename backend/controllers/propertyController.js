@@ -5,8 +5,7 @@ const getAllProperties = async (req, res) => {
     const { city, property_type, listing_type, min_price, max_price, bedrooms, status } = req.query;
 
     let query = `
-      SELECT p.*, u.full_name as agent_name, u.email as agent_email, u.phone as agent_phone,
-             (SELECT image_url FROM property_images WHERE property_id = p.id AND is_primary = TRUE LIMIT 1) as primary_image
+      SELECT p.*, u.full_name as agent_name, u.email as agent_email, u.phone as agent_phone
       FROM properties p
       LEFT JOIN users u ON p.agent_id = u.id
       WHERE 1=1
@@ -45,7 +44,21 @@ const getAllProperties = async (req, res) => {
     query += ' ORDER BY p.featured DESC, p.created_at DESC';
 
     const [properties] = await db.query(query, params);
-    res.json({ properties });
+
+    const propertiesWithImages = await Promise.all(
+      properties.map(async (property) => {
+        const [images] = await db.query(
+          'SELECT image_url FROM property_images WHERE property_id = ? ORDER BY is_primary DESC',
+          [property.id]
+        );
+        return {
+          ...property,
+          images: images.map(img => img.image_url)
+        };
+      })
+    );
+
+    res.json({ properties: propertiesWithImages });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -66,11 +79,16 @@ const getPropertyById = async (req, res) => {
     }
 
     const [images] = await db.query(
-      'SELECT * FROM property_images WHERE property_id = ? ORDER BY is_primary DESC',
+      'SELECT image_url FROM property_images WHERE property_id = ? ORDER BY is_primary DESC',
       [req.params.id]
     );
 
-    res.json({ property: { ...properties[0], images } });
+    res.json({
+      property: {
+        ...properties[0],
+        images: images.map(img => img.image_url)
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

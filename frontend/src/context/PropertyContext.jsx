@@ -54,7 +54,7 @@ export const PropertyProvider = ({ children }) => {
         yearBuilt: p.year_built,
         status: p.status,
         featured: p.featured,
-        images: p.primary_image ? [p.primary_image] : [],
+        images: p.images || [],
         agent: {
           name: p.agent_name,
           email: p.agent_email,
@@ -96,7 +96,7 @@ export const PropertyProvider = ({ children }) => {
         yearBuilt: p.year_built,
         status: p.status,
         featured: p.featured,
-        images: p.primary_image ? [p.primary_image] : [],
+        images: p.images || [],
         agent: {
           name: p.agent_name,
           email: p.agent_email,

@@ -179,13 +179,13 @@ const AdminUsers = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex items-center justify-end space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
+                      <button key={`view-${user.id}`} className="text-blue-600 hover:text-blue-900">
                         <EyeIcon className="h-4 w-4" />
                       </button>
-                      <button className="text-gray-600 hover:text-gray-900">
+                      <button key={`edit-${user.id}`} className="text-gray-600 hover:text-gray-900">
                         <PencilIcon className="h-4 w-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-900">
+                      <button key={`delete-${user.id}`} className="text-red-600 hover:text-red-900">
                         <TrashIcon className="h-4 w-4" />
                       </button>
                     </div>

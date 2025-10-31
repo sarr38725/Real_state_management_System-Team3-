@@ -1,12 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useProperties } from '../../context/PropertyContext';
 import { useSchedule } from '../../context/ScheduleContext';
 import { useAuth } from '../../context/AuthContext';
-import { 
-  UserGroupIcon, 
-  HomeIcon, 
-  CurrencyDollarIcon, 
+import {
+  UserGroupIcon,
+  HomeIcon,
+  CurrencyDollarIcon,
   ChartBarIcon,
   CalendarIcon,
   ArrowTrendingUpIcon,
@@ -14,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
   const { properties, featuredProperties } = useProperties();
   const { schedules } = useSchedule();
   const { user } = useAuth();
@@ -176,19 +178,31 @@ const AdminDashboard = () => {
         >
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-4">
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => navigate('/admin/users')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all"
+            >
               <UserGroupIcon className="h-8 w-8 text-blue-600 mx-auto mb-2" />
               <p className="text-sm font-medium text-gray-900">Manage Users</p>
             </button>
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => navigate('/admin/properties')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-emerald-50 hover:border-emerald-300 transition-all"
+            >
               <HomeIcon className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
               <p className="text-sm font-medium text-gray-900">Review Properties</p>
             </button>
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => navigate('/admin/schedules')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-all"
+            >
               <ChartBarIcon className="h-8 w-8 text-purple-600 mx-auto mb-2" />
               <p className="text-sm font-medium text-gray-900">View Reports</p>
             </button>
-            <button className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => navigate('/admin/settings')}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-orange-50 hover:border-orange-300 transition-all"
+            >
               <CurrencyDollarIcon className="h-8 w-8 text-orange-600 mx-auto mb-2" />
               <p className="text-sm font-medium text-gray-900">Financial Overview</p>
             </button>

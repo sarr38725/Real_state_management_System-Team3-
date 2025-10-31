@@ -19,9 +19,13 @@ export const PropertyProvider = ({ children }) => {
   const loadProperties = useCallback(async (filters = {}) => {
     setLoading(true);
     try {
-      const filterParams = {
-        status: 'available',
-      };
+      const filterParams = {};
+
+      if (filters.status !== undefined) {
+        filterParams.status = filters.status;
+      } else if (!isAdminMode) {
+        filterParams.status = 'available';
+      }
 
       if (filters.type) filterParams.property_type = filters.type;
       if (filters.location) filterParams.city = filters.location;

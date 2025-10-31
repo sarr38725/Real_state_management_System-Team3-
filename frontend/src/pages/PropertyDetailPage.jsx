@@ -75,7 +75,7 @@ export default function PropertyDetailPage() {
           yearBuilt: p.year_built,
           status: p.status,
           featured: p.featured,
-          images: p.images?.length ? p.images.map(img => img.image_url) : [],
+          images: p.images || [],
           agent: {
             name: p.agent_name,
             email: p.agent_email,

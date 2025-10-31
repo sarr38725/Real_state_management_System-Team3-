@@ -59,23 +59,25 @@ const EditPropertyPage = () => {
 
         if (!isMounted) return;
 
-        if (response && response.id) {
+        const property = response.property || response;
+
+        if (property && property.id) {
           setFormData({
-            title: response.title,
-            description: response.description,
-            price: response.price.toString(),
-            type: response.type,
-            bedrooms: response.bedrooms.toString(),
-            bathrooms: response.bathrooms.toString(),
-            area: response.area.toString(),
-            address: response.location?.address || '',
-            city: response.location?.city || '',
-            state: response.location?.state || '',
-            zipCode: response.location?.zipCode || '',
-            amenities: response.amenities || [],
-            featured: response.featured || false
+            title: property.title || '',
+            description: property.description || '',
+            price: property.price?.toString() || '',
+            type: property.property_type || property.type || 'house',
+            bedrooms: property.bedrooms?.toString() || '',
+            bathrooms: property.bathrooms?.toString() || '',
+            area: property.area_sqft?.toString() || property.area?.toString() || '',
+            address: property.address || '',
+            city: property.city || '',
+            state: property.state || '',
+            zipCode: property.zip_code || property.zipCode || '',
+            amenities: property.amenities || [],
+            featured: property.featured || false
           });
-          setExistingImages(response.images || []);
+          setExistingImages(property.images || []);
         } else {
           showToast('Property not found', 'error');
           navigate(isAdminRoute ? '/admin/properties' : '/dashboard/properties');

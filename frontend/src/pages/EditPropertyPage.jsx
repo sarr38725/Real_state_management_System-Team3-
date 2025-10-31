@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { PhotoIcon } from '@heroicons/react/24/outline';
 import { useProperties } from '../context/PropertyContext';
 import { useUI } from '../context/UIContext';
+import propertyService from '../services/propertyService';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -14,6 +15,7 @@ const EditPropertyPage = () => {
   const navigate = useNavigate();
   const { properties, editProperty } = useProperties();
   const { showToast } = useUI();
+  const isAdminRoute = window.location.pathname.includes('/admin/');
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -51,33 +53,33 @@ const EditPropertyPage = () => {
   useEffect(() => {
     const loadProperty = async () => {
       try {
-        // Find property from context
-        const foundProperty = properties.find(p => p.id === id);
-        
-        if (foundProperty) {
+        const response = await propertyService.getPropertyById(id);
+
+        if (response && response.id) {
           setFormData({
-            title: foundProperty.title,
-            description: foundProperty.description,
-            price: foundProperty.price.toString(),
-            type: foundProperty.type,
-            bedrooms: foundProperty.bedrooms.toString(),
-            bathrooms: foundProperty.bathrooms.toString(),
-            area: foundProperty.area.toString(),
-            address: foundProperty.location.address,
-            city: foundProperty.location.city,
-            state: foundProperty.location.state,
-            zipCode: foundProperty.location.zipCode,
-            amenities: foundProperty.amenities || [],
-            featured: foundProperty.featured || false
+            title: response.title,
+            description: response.description,
+            price: response.price.toString(),
+            type: response.type,
+            bedrooms: response.bedrooms.toString(),
+            bathrooms: response.bathrooms.toString(),
+            area: response.area.toString(),
+            address: response.location?.address || '',
+            city: response.location?.city || '',
+            state: response.location?.state || '',
+            zipCode: response.location?.zipCode || '',
+            amenities: response.amenities || [],
+            featured: response.featured || false
           });
-          setExistingImages(foundProperty.images || []);
+          setExistingImages(response.images || []);
         } else {
           showToast('Property not found', 'error');
-          navigate('/dashboard/properties');
+          navigate('/admin/properties');
         }
-      } catch {
+      } catch (error) {
+        console.error('Error loading property:', error);
         showToast('Failed to load property', 'error');
-        navigate('/dashboard/properties');
+        navigate('/admin/properties');
       } finally {
         setLoading(false);
       }
@@ -133,10 +135,10 @@ const EditPropertyPage = () => {
       };
 
       const result = await editProperty(id, propertyData, images);
-      
+
       if (result.success) {
         showToast('Property updated successfully!', 'success');
-        navigate('/dashboard/properties');
+        navigate(isAdminRoute ? '/admin/properties' : '/dashboard/properties');
       } else {
         showToast(result.error || 'Failed to update property', 'error');
       }

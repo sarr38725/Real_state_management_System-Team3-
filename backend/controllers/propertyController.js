@@ -138,7 +138,7 @@ const updateProperty = async (req, res) => {
     const {
       title, description, property_type, listing_type, price, address,
       city, state, zip_code, country, bedrooms, bathrooms, area_sqft,
-      year_built, status, featured
+      year_built, status, featured, images
     } = req.body;
 
     const [properties] = await db.query('SELECT agent_id FROM properties WHERE id = ?', [propertyId]);
@@ -157,6 +157,17 @@ const updateProperty = async (req, res) => {
       [title, description, property_type, listing_type, price, address, city, state, zip_code,
        country, bedrooms, bathrooms, area_sqft, year_built, status, featured, propertyId]
     );
+
+    if (images && Array.isArray(images)) {
+      await db.query('DELETE FROM property_images WHERE property_id = ?', [propertyId]);
+
+      for (let i = 0; i < images.length; i++) {
+        await db.query(
+          'INSERT INTO property_images (property_id, image_url, is_primary) VALUES (?, ?, ?)',
+          [propertyId, images[i], i === 0]
+        );
+      }
+    }
 
     res.json({ message: 'Property updated successfully' });
   } catch (error) {

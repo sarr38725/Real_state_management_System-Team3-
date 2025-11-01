@@ -21,21 +21,7 @@ const PropertyCard = ({ property, onFavorite, isFavorited = false }) => {
     createdAt
   } = property;
 
-  const FALLBACK_IMAGES = [
-    'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg',
-    'https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg',
-    'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg',
-    'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg',
-    'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg',
-    'https://images.pexels.com/photos/2635038/pexels-photo-2635038.jpeg',
-    'https://images.pexels.com/photos/2102587/pexels-photo-2102587.jpeg',
-    'https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg'
-  ];
-
-  const getFallbackImage = () => {
-    const index = id % FALLBACK_IMAGES.length;
-    return FALLBACK_IMAGES[index];
-  };
+  const hasImage = images && images.length > 0 && images[0];
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
@@ -61,12 +47,21 @@ const PropertyCard = ({ property, onFavorite, isFavorited = false }) => {
       className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group"
     >
       {/* Image Container */}
-      <div className="relative h-64 overflow-hidden">
-        <img
-          src={images?.[0] || getFallbackImage()}
-          alt={title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
+      <div className="relative h-64 overflow-hidden bg-gray-100">
+        {hasImage ? (
+          <img
+            src={images[0]}
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+            <div className="text-center">
+              <HomeIcon className="h-16 w-16 text-gray-400 mx-auto mb-2" />
+              <p className="text-gray-500 text-sm">No Image Available</p>
+            </div>
+          </div>
+        )}
         
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

@@ -154,11 +154,17 @@ const AdminProperties = () => {
                 <tr key={property.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <img
-                        src={property.images?.[0] || 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg'}
-                        alt={property.title}
-                        className="w-12 h-12 rounded-lg object-cover"
-                      />
+                      {property.images?.[0] ? (
+                        <img
+                          src={property.images[0]}
+                          alt={property.title}
+                          className="w-12 h-12 rounded-lg object-cover"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg bg-gray-200 flex items-center justify-center">
+                          <span className="text-gray-400 text-xs">No Img</span>
+                        </div>
+                      )}
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900 max-w-xs truncate">
                           {property.title}

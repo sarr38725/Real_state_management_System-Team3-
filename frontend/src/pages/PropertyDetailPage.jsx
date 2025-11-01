@@ -11,21 +11,18 @@ import Badge from '../components/common/Badge';
 import Button from '../components/common/Button';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
-const FALLBACK_IMG = 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg';
-
 function normalizeDate(v) {
   if (!v) return null;
-  if (typeof v?.toDate === 'function') return v.toDate();     // Firestore Timestamp
+  if (typeof v?.toDate === 'function') return v.toDate();
   return new Date(v);
 }
 
 function asImageArray(images) {
-  if (!images) return [FALLBACK_IMG];
+  if (!images) return [];
   if (Array.isArray(images)) {
-    const arr = images.filter(Boolean);
-    return arr.length ? arr : [FALLBACK_IMG];
+    return images.filter(Boolean);
   }
-  return [images || FALLBACK_IMG];
+  return images ? [images] : [];
 }
 
 function formatPrice(n) {
@@ -148,22 +145,33 @@ export default function PropertyDetailPage() {
       <div className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Image Gallery */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden">
-            <img
-              src={images[currentImageIndex] || FALLBACK_IMG}
-              alt={property.title || 'Property'}
-              className="object-cover w-full h-full"
-            />
-            {images.length > 1 && (
-              <div className="absolute flex space-x-2 -translate-x-1/2 bottom-4 left-1/2">
-                {images.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentImageIndex(idx)}
-                    className={`w-3 h-3 rounded-full transition-all ${idx === currentImageIndex ? 'bg-white' : 'bg-white/50'}`}
-                    aria-label={`Image ${idx + 1}`}
-                  />
-                ))}
+          <div className="relative h-96 md:h-[500px] rounded-2xl overflow-hidden bg-gray-100">
+            {images.length > 0 ? (
+              <>
+                <img
+                  src={images[currentImageIndex]}
+                  alt={property.title || 'Property'}
+                  className="object-cover w-full h-full"
+                />
+                {images.length > 1 && (
+                  <div className="absolute flex space-x-2 -translate-x-1/2 bottom-4 left-1/2">
+                    {images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentImageIndex(idx)}
+                        className={`w-3 h-3 rounded-full transition-all ${idx === currentImageIndex ? 'bg-white' : 'bg-white/50'}`}
+                        aria-label={`Image ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-gray-100 to-gray-200">
+                <div className="text-center">
+                  <MapPinIcon className="h-24 w-24 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-500 text-lg">No Images Available</p>
+                </div>
               </div>
             )}
           </div>

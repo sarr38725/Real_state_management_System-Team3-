@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  MagnifyingGlassIcon, 
+import {
+  MagnifyingGlassIcon,
   PlusIcon,
-  PencilIcon, 
+  PencilIcon,
   TrashIcon,
   EyeIcon,
   CheckCircleIcon,
@@ -13,6 +13,7 @@ import {
 import { useProperties } from '../../context/PropertyContext';
 import { useUI } from '../../context/UIContext';
 import Badge from '../../components/common/Badge';
+import { getImageUrl } from '../../utils/imageHelper';
 import Button from '../../components/common/Button';
 
 const AdminProperties = () => {
@@ -156,7 +157,7 @@ const AdminProperties = () => {
                     <div className="flex items-center">
                       {property.images?.[0] ? (
                         <img
-                          src={property.images[0]}
+                          src={getImageUrl(property.images[0])}
                           alt={property.title}
                           className="w-12 h-12 rounded-lg object-cover"
                         />

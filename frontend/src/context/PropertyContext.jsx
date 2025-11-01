@@ -161,13 +161,29 @@ export const PropertyProvider = ({ children }) => {
     if (!user) return { success: false, error: 'User must be logged in to add properties' };
 
     try {
-      const imageUrls = [];
-      if (Array.isArray(imageFiles) && imageFiles.length) {
-        for (const file of imageFiles) {
-          const formData = new FormData();
-          formData.append('image', file);
-          imageUrls.push(`/uploads/${file.name}`);
+      let imageUrls = [];
+
+      if (Array.isArray(imageFiles) && imageFiles.length > 0) {
+        const formData = new FormData();
+        imageFiles.forEach(file => {
+          formData.append('images', file);
+        });
+
+        const token = localStorage.getItem('token');
+        const uploadResponse = await fetch('http://localhost:5000/api/upload/images', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload images');
         }
+
+        const uploadData = await uploadResponse.json();
+        imageUrls = uploadData.images || [];
       }
 
       const payload = {
@@ -203,12 +219,29 @@ export const PropertyProvider = ({ children }) => {
     if (!user) return { success: false, error: 'User must be logged in to edit properties' };
 
     try {
-      const imageUrls = Array.isArray(propertyData.images) ? [...propertyData.images] : [];
+      let imageUrls = Array.isArray(propertyData.images) ? [...propertyData.images] : [];
 
-      if (Array.isArray(newImageFiles) && newImageFiles.length) {
-        for (const file of newImageFiles) {
-          imageUrls.push(`/uploads/${file.name}`);
+      if (Array.isArray(newImageFiles) && newImageFiles.length > 0) {
+        const formData = new FormData();
+        newImageFiles.forEach(file => {
+          formData.append('images', file);
+        });
+
+        const token = localStorage.getItem('token');
+        const uploadResponse = await fetch('http://localhost:5000/api/upload/images', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload images');
         }
+
+        const uploadData = await uploadResponse.json();
+        imageUrls = [...imageUrls, ...(uploadData.images || [])];
       }
 
       const payload = {
@@ -228,6 +261,7 @@ export const PropertyProvider = ({ children }) => {
         year_built: parseInt(propertyData.yearBuilt) || null,
         status: propertyData.status || 'available',
         featured: propertyData.featured || false,
+        images: imageUrls,
       };
 
       await propertyService.updateProperty(id, payload);

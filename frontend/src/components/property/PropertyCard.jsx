@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { HeartIcon, MapPinIcon, HomeIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 import Badge from '../common/Badge';
+import { getImageUrl } from '../../utils/imageHelper';
 
 const PropertyCard = ({ property, onFavorite, isFavorited = false }) => {
   const {
@@ -22,6 +23,7 @@ const PropertyCard = ({ property, onFavorite, isFavorited = false }) => {
   } = property;
 
   const hasImage = images && images.length > 0 && images[0];
+  const imageUrl = hasImage ? getImageUrl(images[0]) : null;
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
@@ -50,7 +52,7 @@ const PropertyCard = ({ property, onFavorite, isFavorited = false }) => {
       <div className="relative h-64 overflow-hidden bg-gray-100">
         {hasImage ? (
           <img
-            src={images[0]}
+            src={imageUrl}
             alt={title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />

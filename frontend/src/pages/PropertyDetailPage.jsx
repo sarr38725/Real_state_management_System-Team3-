@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPinIcon, CalendarIcon, HeartIcon } from '@heroicons/react/24/outline';
 import { propertyService } from '../services/propertyService';
+import { getImageUrls } from '../utils/imageHelper';
 
 import ScheduleModal from '../components/property/ScheduleModal';
 import ContactModal from '../components/property/ContactModal';
@@ -18,11 +19,7 @@ function normalizeDate(v) {
 }
 
 function asImageArray(images) {
-  if (!images) return [];
-  if (Array.isArray(images)) {
-    return images.filter(Boolean);
-  }
-  return images ? [images] : [];
+  return getImageUrls(images);
 }
 
 function formatPrice(n) {

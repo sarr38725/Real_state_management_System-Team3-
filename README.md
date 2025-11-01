@@ -1,6 +1,6 @@
 # Real Estate Management System
 
-A full-stack real estate management platform with React frontend, Node.js backend, and Supabase for image storage.
+A full-stack real estate management platform with React frontend, Node.js backend, and **MySQL-only** database. All data including images are stored locally.
 
 ## Project Structure
 
@@ -15,7 +15,6 @@ A full-stack real estate management platform with React frontend, Node.js backen
 - Node.js (v18 or higher)
 - MySQL Server (via XAMPP/WAMP/MAMP or standalone)
 - PHPMyAdmin (optional but recommended)
-- Supabase Account (for image storage)
 
 ## Setup Instructions
 
@@ -73,11 +72,9 @@ Install dependencies:
 npm install
 ```
 
-Configure Supabase (for image uploads):
-The `.env` file is already configured. Make sure these values are correct:
+Configure API URL:
+The `.env` file should contain:
 ```
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 VITE_API_URL=http://localhost:5000/api
 ```
 
@@ -127,15 +124,17 @@ Frontend runs on: http://localhost:5173
 - CORS enabled
 
 ### Storage
-- Supabase Storage for property images
+- Local file system for property images (backend/uploads/properties/)
 
 ## Key Features Implementation
 
 ### Image Upload System
-- Images are uploaded to Supabase Storage
+- Images are uploaded to backend server using Multer
+- Files saved to backend/uploads/properties/
 - Unique filenames generated for each upload
-- Public URLs stored in MySQL database
-- Fallback to placeholder images if no images uploaded
+- Image paths stored in MySQL database
+- Served as static files via Express
+- Fallback to placeholder if no images uploaded
 
 ### Database Tables
 - `users` - User accounts with roles
@@ -190,9 +189,11 @@ Frontend runs on: http://localhost:5173
 - Ensure CORS is enabled in backend
 
 ### Images not uploading
-- Verify Supabase credentials in frontend `.env`
-- Check Supabase Storage bucket `property-images` exists
+- Verify backend server is running
+- Check `backend/uploads/properties/` folder exists
 - Ensure user is authenticated
+- Check file size is under 5MB
+- Verify file type is image (jpg, png, gif, webp)
 
 ## License
 
